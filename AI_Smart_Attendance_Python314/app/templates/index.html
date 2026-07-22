@@ -1,0 +1,67 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>AI Smart Attendance</title>
+  <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+<div class="layout">
+  <aside>
+    <div class="brand"><span>AI</span><div>Smart Attendance<small>Monitoring System</small></div></div>
+    <button class="nav active" data-page="dashboard">◫ Dashboard</button>
+    <button class="nav" data-page="register">＋ Register Student</button>
+    <button class="nav" data-page="scanner">◎ Attendance Scanner</button>
+    <button class="nav" data-page="students">♙ Students</button>
+    <button class="nav" data-page="records">▤ Attendance Records</button>
+    <a class="nav" href="/docs" target="_blank">⌘ API Documentation</a>
+    <div class="side-note">Python 3.14<br><b>FastAPI + OpenCV + SQLite</b></div>
+  </aside>
+  <main>
+    <header><div><h1 id="pageTitle">Dashboard</h1><p id="today"></p></div><div class="status">● System Online</div></header>
+    <section id="dashboard" class="page active">
+      <div class="cards">
+        <article><span>Total Students</span><strong id="totalStudents">0</strong></article>
+        <article><span>Present Today</span><strong id="presentToday">0</strong></article>
+        <article><span>Absent Today</span><strong id="absentToday">0</strong></article>
+        <article><span>Attendance Rate</span><strong id="attendanceRate">0%</strong></article>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h2>Recent Attendance</h2><button onclick="showPage('records')">View all</button></div>
+        <div class="table-wrap"><table><thead><tr><th>Roll No.</th><th>Name</th><th>Course</th><th>Date</th><th>Time</th><th>Confidence</th></tr></thead><tbody id="recentTable"></tbody></table></div>
+      </div>
+    </section>
+    <section id="register" class="page">
+      <div class="panel form-panel">
+        <h2>Register a New Student</h2><p>Use a clear, front-facing photograph with good lighting.</p>
+        <form id="studentForm">
+          <div class="grid2"><label>Roll Number<input name="roll_no" required></label><label>Full Name<input name="name" required></label></div>
+          <div class="grid2"><label>Course / Department<input name="course" required></label><label>Email<input name="email" type="email"></label></div>
+          <label>Face Photograph<input name="photo" type="file" accept="image/*" required></label>
+          <button class="primary" type="submit">Register Student & Generate Face Embedding</button>
+        </form><div id="registerMessage"></div>
+      </div>
+    </section>
+    <section id="scanner" class="page">
+      <div class="panel scanner">
+        <h2>Browser Attendance Scanner</h2><p>Capture a webcam image or upload a current photograph.</p>
+        <video id="video" autoplay playsinline></video><canvas id="canvas" hidden></canvas>
+        <div class="actions"><button class="primary" id="startCamera">Start Camera</button><button id="capture">Capture & Mark</button></div>
+        <label class="upload">Or upload image<input id="scanFile" type="file" accept="image/*"></label>
+        <div id="scanResult" class="result">Waiting for scan...</div>
+      </div>
+    </section>
+    <section id="students" class="page"><div class="panel">
+      <div class="panel-head"><h2>Registered Students</h2><input id="studentSearch" placeholder="Search students"></div>
+      <div class="table-wrap"><table><thead><tr><th>Roll No.</th><th>Name</th><th>Course</th><th>Email</th><th>Registered</th><th>Action</th></tr></thead><tbody id="studentTable"></tbody></table></div>
+    </div></section>
+    <section id="records" class="page"><div class="panel">
+      <div class="panel-head"><h2>Attendance Records</h2><div><input id="recordDate" type="date"><button id="filterRecords">Filter</button><a id="downloadCsv" class="button" href="/api/reports/attendance.csv">Download CSV</a></div></div>
+      <div class="table-wrap"><table><thead><tr><th>Roll No.</th><th>Name</th><th>Course</th><th>Date</th><th>Check-in</th><th>Confidence</th><th>Action</th></tr></thead><tbody id="recordTable"></tbody></table></div>
+    </div></section>
+  </main>
+</div>
+<script src="/static/app.js"></script>
+</body>
+</html>
